@@ -12,7 +12,7 @@ class Slack_Alarm(Alarm):
 		self.client = Slacker(api_key) 
 		self.channel = channel
 		log.info("Slacker_Alarm intialized.")
-		self.client.chat.post_message(self.channel, 'PokeAlarm activated!', username='PokeAlarm', icon_emoji=':pokeball:')
+		self.client.chat.post_message(self.channel, "PokeAlarm activated!", username='PokeAlarm', icon_emoji=':pokeball:')
 		
 	def pokemon_alert(self, pokemon):
                 user_icon = ':pokemon-' + pokemon['name'].lower() + ':'
@@ -20,4 +20,5 @@ class Slack_Alarm(Alarm):
 		notification_text = pokemon['name'].title() + " found!"
 		google_maps_link = gmaps_link(pokemon["lat"], pokemon["lng"])
 		time_text =  pkmn_time_text(pokemon['disappear_time']) + "  Address: " + address + "."
-		self.client.chat.post_message(self.channel, notification_text + " " + time_text + " " + google_maps_link, username=pokemon['name'], icon_emoji=user_icon)
+		output_text = '<{}|{}> {}'.format(google_maps_link, notification_text , time_text)
+		self.client.chat.post_message(self.channel, output_text, username=pokemon['name'], icon_emoji=user_icon)
